@@ -325,7 +325,7 @@ def produce_arc_singularity_script(containers, metadata, commands, input_files):
             commands_joined = [prefix_]
             for i in range(0, len(commands)):
                 if i > 0: 
-                    if commands[i-1] == "-c":
+                    if "-c" in commands[i-1]:
                         commands_joined.append(" ".join("\'" + commands[i] + "\'" ))                    
                     else:
                         commands_joined.append(" ".join(commands[i]))
