@@ -71,10 +71,13 @@ def prepare_envs(container):
     env = ""
     try:
         for env_var in container["env"]:
-            env += f"--env {env_var['name']}={env_var['value']} "
+            if env_var.get('value') not None:
+                env += f"--env {env_var['name']}={env_var['value']} "
+            else:
+                env += f"--env {env_var['name']}= "
         return [env]
     except Exception as e:
-        logging.info(f"Container has no env specified: {e}")
+        logging.info(f"There is some problem with your env variables: {e}")
         return [""]
 
 def prepare_mounts(pod, container_standalone):
