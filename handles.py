@@ -71,7 +71,7 @@ def prepare_envs(container):
     env = ""
     try:
         for env_var in container["env"]:
-            if env_var.get('value') not None:
+            if env_var.get('value') is not None:
                 env += f"--env {env_var['name']}={env_var['value']} "
             else:
                 env += f"--env {env_var['name']}= "
