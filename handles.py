@@ -324,7 +324,13 @@ def produce_arc_singularity_script(containers, metadata, commands, input_files):
 """
             commands_joined = [prefix_]
             for i in range(0, len(commands)):
-                commands_joined.append(" ".join(commands[i]))
+                if i > 0: 
+                    if commands[i-1] == "-c":
+                        commands_joined.append(" ".join("\'" + commands[i] + "\'" ))                    
+                    else:
+                        commands_joined.append(" ".join(commands[i]))
+                else:
+                    commands_joined.append(" ".join(commands[i]))
             f.write(batch_macros + "\n" + "\n".join(commands_joined))
         print("input files are ", input_files)
         if len(input_files) == 1:
@@ -335,6 +341,7 @@ def produce_arc_singularity_script(containers, metadata, commands, input_files):
 ( stdout = "stdout" )
 ( stderr = "stderr" )
 ( gmlog = "gmlog" )
+( memory = "{requested_memory}")
 """
         else:
             input_string = ""
@@ -347,6 +354,7 @@ def produce_arc_singularity_script(containers, metadata, commands, input_files):
 ( stderr = "stderr" )
 ( gmlog = "gmlog" )
 ( inputFiles = {input_string} )
+( memory = "{requested_memory}")
 """
 
         print(job)
