@@ -326,11 +326,8 @@ def produce_arc_singularity_script(containers, metadata, commands, input_files):
             for i in range(0, len(commands)):
                 if i > 0: 
                     if "-c" in commands[i-1]:
-                        commands_joined.append(" ".join("\'" + commands[i] + "\'" ))                    
-                    else:
-                        commands_joined.append(" ".join(commands[i]))
-                else:
-                    commands_joined.append(" ".join(commands[i]))
+                        commands[i] = "\'" + commands[i] + "\'"                    
+            commands_joined.append(" ".join(commands))
             f.write(batch_macros + "\n" + "\n".join(commands_joined))
         print("input files are ", input_files)
         if len(input_files) == 1:
@@ -580,7 +577,7 @@ def SubmitHandler():
             print("singularity_command:", singularity_command)
             singularity_commands.append(singularity_command)
         path = produce_arc_singularity_script(
-            containers, metadata, singularity_commands, input_files
+            containers, metadata, singularity_command, input_files
         )
     else:
         print("host keyword detected, ignoring other containers")
