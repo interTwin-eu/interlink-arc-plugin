@@ -72,7 +72,11 @@ def prepare_envs(container):
     try:
         for env_var in container["env"]:
             if env_var.get('value') is not None:
-                env += f"--env {env_var['name']}={env_var['value']} "
+                if env_var.get('value').startswith("["):
+                    modified_value = '"' + env_var.get('value').replace('"', '\"') + '"'
+                    env += f"--env {env_var['name']}={modified_value} "
+                else:
+                    env += f"--env {env_var['name']}={env_var['value']} "
             else:
                 env += f"--env {env_var['name']}= "
         return [env]
